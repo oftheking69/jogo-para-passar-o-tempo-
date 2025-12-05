@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Defender - Jogo de Nave Espacial</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Tela de início -->
+        <div id="start-screen" class="screen">
+            <div class="screen-content">
+                <h1><i class="fas fa-rocket"></i> SPACE DEFENDER</h1>
+                <p class="subtitle">Defenda a galáxia dos invasores alienígenas!</p>
+                
+                <div class="instructions">
+                    <h2><i class="fas fa-gamepad"></i> Controles</h2>
+                    <div class="controls">
+                        <div class="control-item">
+                            <span class="key">← →</span>
+                            <span class="action">Mover nave</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">Espaço</span>
+                            <span class="action">Atirar</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">P</span>
+                            <span class="action">Pausar</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">R</span>
+                            <span class="action">Reiniciar</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-info">
+                    <p><i class="fas fa-bullseye"></i> Destrua os inimigos para ganhar pontos</p>
+                    <p><i class="fas fa-heart"></i> Você tem 3 vidas - evite colisões</p>
+                    <p><i class="fas fa-chart-line"></i> A dificuldade aumenta com o tempo</p>
+                </div>
+                
+                <button id="start-btn" class="btn">
+                    <i class="fas fa-play"></i> Iniciar Jogo
+                </button>
+                <button id="high-scores-btn" class="btn secondary">
+                    <i class="fas fa-trophy"></i> Melhores Pontuações
+                </button>
+            </div>
+        </div>
+        
+        <!-- Tela de jogo -->
+        <div id="game-screen" class="screen hidden">
+            <div class="game-header">
+                <div class="score-display">
+                    <i class="fas fa-star"></i>
+                    <span>Pontuação: <span id="score">0</span></span>
+                </div>
+                <div class="lives-display">
+                    <i class="fas fa-heart"></i>
+                    <span>Vidas: <span id="lives">3</span></span>
+                </div>
+                <div class="level-display">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Nível: <span id="level">1</span></span>
+                </div>
+                <button id="pause-btn" class="btn small">
+                    <i class="fas fa-pause"></i> Pausar
+                </button>
+            </div>
+            
+            <div class="game-area">
+                <!-- A nave do jogador -->
+                <div id="player" class="player">
+                    <div class="ship-body"></div>
+                    <div class="ship-wing left"></div>
+                    <div class="ship-wing right"></div>
+                    <div class="ship-engine"></div>
+                </div>
+                
+                <!-- Inimigos serão adicionados dinamicamente -->
+                <div id="enemies-container"></div>
+                
+                <!-- Tiros serão adicionados dinamicamente -->
+                <div id="shots-container"></div>
+                
+                <!-- Explosões serão adicionadas dinamicamente -->
+                <div id="explosions-container"></div>
+            </div>
+            
+            <div class="game-footer">
+                <p>Use as setas ← → para mover e ESPAÇO para atirar</p>
+            </div>
+        </div>
+        
+        <!-- Tela de pausa -->
+        <div id="pause-screen" class="screen hidden">
+            <div class="screen-content">
+                <h1><i class="fas fa-pause"></i> JOGO PAUSADO</h1>
+                <p class="subtitle">O destino da galáxia espera por você!</p>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-label">Pontuação</span>
+                        <span class="stat-value" id="pause-score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Nível</span>
+                        <span class="stat-value" id="pause-level">1</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Vidas</span>
+                        <span class="stat-value" id="pause-lives">3</span>
+                    </div>
+                </div>
+                
+                <button id="resume-btn" class="btn">
+                    <i class="fas fa-play"></i> Continuar
+                </button>
+                <button id="restart-btn" class="btn secondary">
+                    <i class="fas fa-redo"></i> Reiniciar
+                </button>
+                <button id="quit-btn" class="btn secondary">
+                    <i class="fas fa-home"></i> Voltar ao Início
+                </button>
+            </div>
+        </div>
+        
+        <!-- Tela de game over -->
+        <div id="game-over-screen" class="screen hidden">
+            <div class="screen-content">
+                <h1><i class="fas fa-skull-crossbones"></i> FIM DE JOGO</h1>
+                <p class="subtitle">Sua nave foi destruída!</p>
+                
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <span class="final-stat-label">Pontuação Final</span>
+                        <span class="final-stat-value" id="final-score">0</span>
+                    </div>
+                    <div class="final-stat">
+                        <span class="final-stat-label">Nível Alcançado</span>
+                        <span class="final-stat-value" id="final-level">1</span>
+                    </div>
+                    <div class="final-stat">
+                        <span class="final-stat-label">Inimigos Destruídos</span>
+                        <span class="final-stat-value" id="final-enemies">0</span>
+                    </div>
+                </div>
+                
+                <div class="game-over-message">
+                    <p id="game-over-message-text">A galáxia foi conquistada pelos invasores...</p>
+                </div>
+                
+                <button id="play-again-btn" class="btn">
+                    <i class="fas fa-redo"></i> Jogar Novamente
+                </button>
+                <button id="back-to-menu-btn" class="btn secondary">
+                    <i class="fas fa-home"></i> Voltar ao Menu
+                </button>
+            </div>
+        </div>
+        
+        <!-- Tela de melhores pontuações -->
+        <div id="high-scores-screen" class="screen hidden">
+            <div class="screen-content">
+                <h1><i class="fas fa-trophy"></i> MELHORES PONTUAÇÕES</h1>
+                <p class="subtitle">Os maiores defensores da galáxia</p>
+                
+                <div class="scores-table">
+                    <table id="high-scores-table">
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Jogador</th>
+                                <th>Pontuação</th>
+                                <th>Nível</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="high-scores-body">
+                            <!-- As pontuações serão carregadas via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="no-scores" id="no-scores-message">
+                    <p>Nenhuma pontuação registrada ainda. Seja o primeiro!</p>
+                </div>
+                
+                <button id="back-to-menu-from-scores" class="btn">
+                    <i class="fas fa-arrow-left"></i> Voltar ao Menu
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Elementos de áudio (seriam usados em uma versão com JavaScript) -->
+    <audio id="shoot-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-laser-weapon-shot-1671.mp3" preload="auto"></audio>
+    <audio id="explosion-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-explosion-with-debris-1993.mp3" preload="auto"></audio>
+    <audio id="hit-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-explosion-2759.mp3" preload="auto"></audio>
+    
+    <script src="game.js"></script>
+</body>
+</html>
